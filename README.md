@@ -146,3 +146,5 @@ The code is organized into dedicated functions, each handling one responsibility
 
 **Problem: pulseIn blocking execution** — the default 25000µs timeout on `pulseIn()` for the ultrasonic sensors was blocking the CPU for up to 50ms per loop cycle with both sensors.
 **Solution:** Timeout reduced to **5000µs**, cutting the maximum blocking time to 10ms per cycle.
+<img width="1600" height="1600" alt="image" src="https://github.com/user-attachments/assets/b563c89b-5a52-462a-a371-f519e4303a9c" />
+
