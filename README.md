@@ -90,12 +90,49 @@ A **128x64 pixel OLED screen** displays all system data in real time: temperatur
 ---
 
 ## Code Structure
-loop()
-├── readMainSensors()      // reads AHT20, MQ2, rain sensor
-├── handlePeopleCounter()  // HC-SR04 x2, enter/exit logic
-├── controlActuators()     // servos, LEDs, buzzer
-├── printEverything()      // Serial Monitor every 1000ms
-└── updateOLED()           // screen refresh every 500ms
+
+The code is organized into dedicated functions, each handling one responsibility:
+
+| Function | Called every | Description |
+|---|---|---|
+| `readMainSensors()` | Every loop | Reads AHT20 (temp/humidity), MQ2 (gas), rain sensor. Updates all global state variables |
+| `handlePeopleCounter()` | Every loop | Reads both HC-SR04 sensors, determines entry/exit direction, updates people count |
+| `controlActuators()` | Every loop | Controls fan servo, laundry servo, red LED, green LED and buzzer based on current state |
+| `printEverything()` | Every 1000ms | Prints full system status to Serial Monitor |
+| `updateOLED()` | Every 500ms | Refreshes the OLED screen with current sensor values and alert states |
+
+### System Logic Flow
+
+```
+                        ┌─────────────────┐
+                        │     setup()     │
+                        │  Init sensors,  │
+                        │  OLED, servos   │
+                        └────────┬────────┘
+                                 │
+                        ┌────────▼────────┐
+                   ┌────│     loop()      │────┐
+                   │    └────────┬────────┘    │
+                   │             │             │
+          ┌────────▼──────┐      │      ┌──────▼────────┐
+          │readMainSensors│      │      │handlePeople   │
+          │  AHT20        │      │      │Counter()      │
+          │  MQ2          │      │      │  HC-SR04 x2   │
+          │  Rain sensor  │      │      │  enter/exit   │
+          └───────────────┘      │      └───────────────┘
+                                 │
+                   ┌─────────────▼─────────────┐
+                   │      controlActuators()    │
+                   │  fan servo  laundry servo  │
+                   │  red LED    green LED      │
+                   │  buzzer                    │
+                   └─────────────┬─────────────┘
+                                 │
+                   ┌─────────────▼─────────────┐
+                   │  every 500ms → updateOLED()│
+                   │  every 1000ms → printAll() │
+                   └───────────────────────────┘
+```
 
 ---
 
