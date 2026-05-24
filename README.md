@@ -1,7 +1,5 @@
 # Smart Home - Automated Monitoring and Control System
 
-**Author:** Știrbu Loredana | **Group:** 333CB
-**Platform:** Arduino Uno
 **OCW Page:** https://ocw.cs.pub.ro/courses/pm/prj2026/cezar.zlatea/loredana.stirbu
 
 ## What is this project?
